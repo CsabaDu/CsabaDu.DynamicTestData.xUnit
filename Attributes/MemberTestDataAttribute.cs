@@ -6,7 +6,7 @@ namespace CsabaDu.DynamicTestData.xUnit.Attributes;
 
 public sealed class MemberTestDataAttribute(
     string memberName,
-    IDataStrategy dataStrategy)
+    params object[]? args)
 : MemberTestDataAttributeBase(
     memberName,
-    dataStrategy);
+    args);

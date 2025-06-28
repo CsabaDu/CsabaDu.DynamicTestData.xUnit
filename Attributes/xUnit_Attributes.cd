@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="CsabaDu.DynamicTestData.xUnit.Attributes.MemberTestDataAttribute">
-    <Position X="0.5" Y="3.5" Width="2.25" />
+    <Position X="0.5" Y="4" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Attributes\MemberTestDataAttribute.cs</FileName>
@@ -14,9 +14,10 @@
   <Class Name="CsabaDu.DynamicTestData.xUnit.Attributes.MemberTestDataAttributeBase">
     <Position X="0.5" Y="1.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>Attributes\MemberTestDataAttributeBase.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

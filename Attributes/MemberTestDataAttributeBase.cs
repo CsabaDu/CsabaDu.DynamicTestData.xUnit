@@ -4,28 +4,37 @@
 namespace CsabaDu.DynamicTestData.xUnit.Attributes;
 
 public abstract class MemberTestDataAttributeBase(
-    string memberName,
-    IDataStrategy dataStrategy)
+    string memberName, object[]? args)
 : MemberDataAttributeBase(
-    memberName,
-    [dataStrategy])
+    memberName, args),
+    IArgsCode
 {
+    public ArgsCode ArgsCode { get; set; } =
+        ArgsCode.Properties;
+
     protected override object[] ConvertDataItem(
         MethodInfo testMethod,
         object item)
     {
-        if (item is ITestDataRow testDataRow)
+        if (item is not ITestData testData)
         {
-            return testDataRow.GetParams(dataStrategy)!;
+            if (item is not ITestDataRow testDataRow)
+            {
+                return item switch
+                {
+                    null => null!,
+                    object[] args => args,
+                    _ => throw new ArgumentException(
+                        $"'{MemberName}' member of '{testMethod.DeclaringType}' " +
+                        "yielded an item that is not an 'object[]'"),
+                };
+            }
+
+            testData = testDataRow.GetTestData();
         }
 
-        return item switch
-        {
-            null => null!,
-            object[] args => args,
-            _ => throw new ArgumentException(
-                $"{MemberName} member of {testMethod.DeclaringType} " +
-                "yielded an item that is not an 'object[]'"),
-        };
+        return testData.ToParams(
+            ArgsCode,
+            testData is IExpected)!;
     }
 }
