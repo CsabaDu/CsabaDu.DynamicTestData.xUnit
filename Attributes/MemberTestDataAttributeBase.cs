@@ -30,11 +30,11 @@ public abstract class MemberTestDataAttributeBase(
         }
 
         return testData.ToParams(
-            getArgsCode(),
+            getArgsCodeFromDataSourceMember(),
             testData is IExpected)!;
 
         #region Local methods
-        ArgsCode getArgsCode()
+        ArgsCode getArgsCodeFromDataSourceMember()
         {
             try
             {
@@ -42,7 +42,7 @@ public abstract class MemberTestDataAttributeBase(
                     ?? throw new InvalidOperationException(
                         "Test method type is null");
 
-                object memberValue = getMemberValue(
+                object dataSource = getMemberValue(
                     testMethodType,
                     BindingFlags.Static |
                     BindingFlags.Public |
@@ -53,7 +53,7 @@ public abstract class MemberTestDataAttributeBase(
 
                 var argCodeProperty = MemberType?.GetProperty("ArgsCode");
 
-                if (argCodeProperty?.GetValue(memberValue) is ArgsCode argsCode)
+                if (argCodeProperty?.GetValue(dataSource) is ArgsCode argsCode)
                 {
                     return argsCode;
                 }
