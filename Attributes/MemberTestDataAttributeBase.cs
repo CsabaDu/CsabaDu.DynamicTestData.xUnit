@@ -6,12 +6,8 @@ namespace CsabaDu.DynamicTestData.xUnit.Attributes;
 public abstract class MemberTestDataAttributeBase(
     string memberName, object[]? args)
 : MemberDataAttributeBase(
-    memberName, args),
-    IArgsCode
+    memberName, args)
 {
-    public ArgsCode ArgsCode { get; set; } =
-        ArgsCode.Properties;
-
     protected override object[] ConvertDataItem(
         MethodInfo testMethod,
         object item)
@@ -23,7 +19,7 @@ public abstract class MemberTestDataAttributeBase(
                 return item switch
                 {
                     null => null!,
-                    object[] args => args,
+                    object?[] args => args as object[],
                     _ => throw new ArgumentException(
                         $"'{MemberName}' member of '{testMethod.DeclaringType}' " +
                         "yielded an item that is not an 'object[]'"),
