@@ -21,7 +21,8 @@ public abstract class MemberTestDataAttributeBase(
                     null => null!,
                     object?[] args => args as object[],
                     _ => throw new ArgumentException(
-                        $"'{MemberName}' member of '{testMethod.DeclaringType}' " +
+                        $"'{MemberName}' member of " +
+                        $"'{MemberType.Name}' " +
                         "yielded an item that is not an 'object[]'"),
                 };
             }
@@ -38,68 +39,54 @@ public abstract class MemberTestDataAttributeBase(
         {
             try
             {
-                var testMethodType = (MemberType?.DeclaringType)
-                    ?? throw new InvalidOperationException(
-                        "Test method type is null");
-
-                object dataSource = getMemberValue(
-                    testMethodType,
+                var dataSource = getDataSourceMemberValue(
                     BindingFlags.Static |
                     BindingFlags.Public |
-                    BindingFlags.NonPublic)
-                    ?? throw new InvalidOperationException(
-                        "static data source member is not found " +
-                        $"in the test method {testMethodType.Name}");
+                    BindingFlags.NonPublic);
 
-                var argCodeProperty = MemberType?.GetProperty("ArgsCode");
-
-                if (argCodeProperty?.GetValue(dataSource) is ArgsCode argsCode)
-                {
-                    return argsCode;
-                }
-
-                throw new InvalidOperationException(
-                    "'ArgsCode' property is not found in the member " +
-                    $"{MemberType?.Name}.{MemberName}");
+                return dataSource is IArgsCode dataStrategyBase ?
+                    dataStrategyBase.ArgsCode
+                    : default;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(
-                    "Failed to retrieve ArgsCode from " +
-                    $"{MemberType?.Name}.{MemberName}",
+                    "Failed to retrieve 'ArgsCode' from " +
+                    $"{MemberType.Name}.{MemberName}",
                     ex is TargetInvocationException tiex ?
-                        tiex.InnerException
-                        : ex);
+                    tiex.InnerException
+                    : ex);
             }
         }
 
-        object? getMemberValue(Type testMethodType, BindingFlags flags)
+        object getDataSourceMemberValue(BindingFlags flags)
         {
-            if (testMethodType.GetProperty(MemberName, flags)
-                is { PropertyType: var propertyType } propertyInfo
-                && propertyType == MemberType)
+            // Property
+            if (MemberType.GetProperty(MemberName, flags) is { } property
+                && property.GetValue(null) is object propertyValue)
             {
-                return propertyInfo.GetValue(null);
+                return propertyValue;
             }
 
-            if (testMethodType.GetMethod(MemberName, flags,
-                null,
-                Type.EmptyTypes,
-                null)
-                is { ReturnType: var returnType } methodInfo
-                && returnType == MemberType)
+            // Method
+            if (MemberType.GetMethod(MemberName, flags,
+                null, Type.EmptyTypes, null) is { } method
+                && method.Invoke(null, null) is object methodValue)
             {
-                return methodInfo.Invoke(null, null);
+                return methodValue;
             }
 
-            if (testMethodType.GetField(MemberName, flags)
-                is { FieldType: var fieldType } fieldInfo
-                && fieldType == MemberType)
+            // Field
+            if (MemberType.GetField(MemberName, flags) is { } field
+                && field.GetValue(null) is object fieldValue)
             {
-                return fieldInfo.GetValue(null);
+                return fieldValue;
             }
 
-            return null;
+            throw new InvalidOperationException(
+                "Static data source member " +
+                $"'{MemberName}' not found in " +
+                $"{MemberType.Name}");
         }
         #endregion
     }
