@@ -1,6 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2025. Csaba Dudas (CsabaDu)
 
+using System;
+
 namespace CsabaDu.DynamicTestData.xUnit.Attributes;
 
 public abstract class MemberTestDataAttributeBase(
@@ -39,20 +41,20 @@ public abstract class MemberTestDataAttributeBase(
         {
             try
             {
-                var dataSource = getDataSourceMemberValue(
+                object dataSource = getDataSourceMemberValue(
                     BindingFlags.Static |
                     BindingFlags.Public |
                     BindingFlags.NonPublic);
 
                 return dataSource is IArgsCode dataStrategyBase ?
                     dataStrategyBase.ArgsCode
-                    : default;
+                    : ArgsCode.Instance;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(
-                    "Failed to retrieve 'ArgsCode' from " +
-                    $"{MemberType.Name}.{MemberName}",
+                    "Failed to retrieve 'ITestData' type data rows from " +
+                    $"{MemberType?.Name ?? "(unknown type)"}.{MemberName}",
                     ex is TargetInvocationException tiex ?
                     tiex.InnerException
                     : ex);
@@ -70,7 +72,7 @@ public abstract class MemberTestDataAttributeBase(
 
             // Method
             if (MemberType.GetMethod(MemberName, flags,
-                null, Type.EmptyTypes, null) is { } method
+                null, EmptyTypeArray, null) is { } method
                 && method.Invoke(null, null) is object methodValue)
             {
                 return methodValue;
@@ -90,4 +92,6 @@ public abstract class MemberTestDataAttributeBase(
         }
         #endregion
     }
+
+    private static readonly Type[] EmptyTypeArray = Type.EmptyTypes;
 }
