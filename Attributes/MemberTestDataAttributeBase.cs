@@ -25,7 +25,8 @@ public abstract class MemberTestDataAttributeBase(
                     _ => throw new ArgumentException(
                         $"'{MemberName}' member of " +
                         $"'{MemberType.Name}' " +
-                        "yielded an item that is not an 'object[]'"),
+                        "yielded an item that is not an 'object[]' " +
+                        "or an 'ITestData' or 'ITestDataRow' instance"),
                 };
             }
 
@@ -33,65 +34,7 @@ public abstract class MemberTestDataAttributeBase(
         }
 
         return testData.ToParams(
-            getArgsCodeFromDataSourceMember(),
+            ArgsCode.Instance,
             testData is IExpected)!;
-
-        #region Local methods
-        ArgsCode getArgsCodeFromDataSourceMember()
-        {
-            try
-            {
-                object dataSource = getDataSourceMemberValue(
-                    BindingFlags.Static |
-                    BindingFlags.Public |
-                    BindingFlags.NonPublic);
-
-                return dataSource is IArgsCode dataStrategyBase ?
-                    dataStrategyBase.ArgsCode
-                    : ArgsCode.Instance;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "Failed to retrieve 'ITestData' type data rows from " +
-                    $"{MemberType?.Name ?? "(unknown type)"}.{MemberName}",
-                    ex is TargetInvocationException tiex ?
-                    tiex.InnerException
-                    : ex);
-            }
-        }
-
-        object getDataSourceMemberValue(BindingFlags flags)
-        {
-            // Property
-            if (MemberType.GetProperty(MemberName, flags) is { } property
-                && property.GetValue(null) is object propertyValue)
-            {
-                return propertyValue;
-            }
-
-            // Method
-            if (MemberType.GetMethod(MemberName, flags,
-                null, EmptyTypeArray, null) is { } method
-                && method.Invoke(null, null) is object methodValue)
-            {
-                return methodValue;
-            }
-
-            // Field
-            if (MemberType.GetField(MemberName, flags) is { } field
-                && field.GetValue(null) is object fieldValue)
-            {
-                return fieldValue;
-            }
-
-            throw new InvalidOperationException(
-                "Static data source member " +
-                $"'{MemberName}' not found in " +
-                $"{MemberType.Name}");
-        }
-        #endregion
     }
-
-    private static readonly Type[] EmptyTypeArray = Type.EmptyTypes;
 }
