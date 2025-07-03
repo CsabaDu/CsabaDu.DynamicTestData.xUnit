@@ -1,8 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2025. Csaba Dudas (CsabaDu)
 
-using System;
-
 namespace CsabaDu.DynamicTestData.xUnit.Attributes;
 
 public abstract class MemberTestDataAttributeBase(
