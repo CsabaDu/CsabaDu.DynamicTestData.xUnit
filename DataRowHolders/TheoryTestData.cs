@@ -11,7 +11,7 @@ where TTestData : notnull, ITestData
 {
     private TheoryTestData(ArgsCode argsCode)
     {
-        DataStrategy = new DataStrategy(
+        DataStrategy = GetStoredDataStrategy(
             argsCode.Defined(nameof(argsCode)),
             typeof(TTestData).IsAssignableTo(typeof(IExpected)));
     }
@@ -142,7 +142,7 @@ where TTestData : notnull, ITestData
     public IDataStrategy GetDataStrategy(ArgsCode? argsCode)
     => DataStrategy.ArgsCode == argsCode ?
         DataStrategy
-        : new DataStrategy(
+        : GetStoredDataStrategy(
             argsCode ?? DataStrategy.ArgsCode,
             DataStrategy.WithExpected);
 }
