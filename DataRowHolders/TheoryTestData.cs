@@ -99,13 +99,9 @@ where TTestData : notnull, ITestData
     }
 
     public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode)
-    {
-        argsCode ??= DataStrategy.ArgsCode;
-
-        return _testDataList.Select(td => td.ToParams(
-            argsCode.Value,
-            DataStrategy.WithExpected));
-    }
+    =>_testDataList.Select(td => td.ToParams(
+        argsCode ?? DataStrategy.ArgsCode,
+        DataStrategy.WithExpected));
 
     public IEnumerable<ITestDataRow>? GetTestDataRows()
     => _testDataList.Select(td => CreateTestDataRow((TTestData)td));
@@ -140,9 +136,5 @@ where TTestData : notnull, ITestData
     }
 
     public IDataStrategy GetDataStrategy(ArgsCode? argsCode)
-    => DataStrategy.ArgsCode == argsCode ?
-        DataStrategy
-        : GetStoredDataStrategy(
-            argsCode ?? DataStrategy.ArgsCode,
-            DataStrategy.WithExpected);
+    => GetStoredDataStrategy(argsCode, DataStrategy);
 }
