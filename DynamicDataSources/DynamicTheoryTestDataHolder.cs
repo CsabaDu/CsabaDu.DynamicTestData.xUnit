@@ -42,12 +42,11 @@ public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
             return null;
         }
 
-        ArgsCode dataRowHolderArgsCode = DataRowHolder.DataStrategy.ArgsCode;
-        argsCode ??= dataRowHolderArgsCode;
+        argsCode ??= ArgsCode;
 
         if (DataRowHolder is TheoryTestData<TTestData> theoryTestData)
         {
-            return argsCode == dataRowHolderArgsCode ?
+            return argsCode == ArgsCode ?
                 theoryTestData
                 : new TheoryTestData<TTestData>(
                     theoryTestData,
