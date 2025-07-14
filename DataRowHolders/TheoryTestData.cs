@@ -6,7 +6,7 @@ namespace CsabaDu.DynamicTestData.xUnit.DataRowHolders;
 public sealed class TheoryTestData<TTestData>
 : TheoryData,
 ITheoryTestData,
-ITypedTestDataRow<object?[], TTestData>
+ITestDataRowFactory<object?[], TTestData>
 where TTestData : notnull, ITestData
 {
     private TheoryTestData(ArgsCode argsCode)
