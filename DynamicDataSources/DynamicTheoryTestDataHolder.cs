@@ -24,7 +24,7 @@ public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
 {
     protected override void Add<TTestData>(TTestData testData)
     {
-        bool rowCreated = TryGetTestDataRow<object?[], TTestData>(
+        bool rowCreated = TryCreateTestDataRow<object?[], TTestData>(
             testData,
             out ITestDataRow<object?[], TTestData>? testDataRow);
 
@@ -69,29 +69,27 @@ public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
         testData,
         ArgsCode);
 
-    protected override bool TryGetTestDataRow<TDataRow, TTestData>(
+    protected override bool TryCreateTestDataRow<TDataRow, TTestData>(
         TTestData testData,
         out ITestDataRow<object?[], TTestData>? testDataRow)
     {
-        if (DataRowHolder is not ITheoryTestData theoryTestData)
+        if (DataRowHolder is not ITheoryTestData)
         {
-            return base.TryGetTestDataRow<TDataRow, TTestData>(
+            return base.TryCreateTestDataRow<TDataRow, TTestData>(
                 testData,
                 out testDataRow);
         }
 
-        testDataRow = default;
+        bool isValidDataRowHolder =
+            Equals(DataRowHolder.DataStrategy) &&
+            GetTestDataType() == typeof(TTestData);
 
-        if (!Equals(theoryTestData.DataStrategy)
-            || theoryTestData.TestDataType != typeof(TTestData))
-        {
-            WithExpected = testData is IExpected;
+        bool? withExpected = testData is IExpected;
 
-            InitDataRowHolder(testData);
-            return false;
-        }
-
-        testDataRow = CreateTestDataRow(testData);
-        return testDataRow != default;
+        return TryCreateTestDataRow(
+            testData,
+            isValidDataRowHolder,
+            withExpected,
+            out testDataRow);
     }
 }
