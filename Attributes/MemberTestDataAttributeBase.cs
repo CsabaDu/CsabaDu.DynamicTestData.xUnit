@@ -33,6 +33,6 @@ public abstract class MemberTestDataAttributeBase(
 
         return testData.ToParams(
             ArgsCode.Instance,
-            testData is IExpected)!;
+            PropertyCode.Expected)!;
     }
 }

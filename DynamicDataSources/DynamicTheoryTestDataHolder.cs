@@ -1,7 +1,7 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2025. Csaba Dudas (CsabaDu)
 
-namespace CsabaDu.DynamicTestData.xUnit.ynamicDataSources;
+namespace CsabaDu.DynamicTestData.xUnit.DynamicDataSources;
 
 /// <summary>
 /// Abstract base class for providing dynamic theory test data sources with type-safe argument handling.
@@ -20,31 +20,30 @@ namespace CsabaDu.DynamicTestData.xUnit.ynamicDataSources;
 /// </remarks>
 /// <param name="argsCode">The strategy for converting test data to method arguments</param>
 public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
-: DynamicObjectArraySource(argsCode, typeof(IExpected))
+: DynamicExpectedObjectArrayRowSource(argsCode)
 {
     protected override void Add<TTestData>(TTestData testData)
     {
-        bool rowCreated = TryCreateTestDataRow<object?[], TTestData>(
-            testData,
-            out ITestDataRow<object?[], TTestData>? testDataRow);
-
-        if (rowCreated && DataRowHolder is TheoryTestData<TTestData> theoryTestData)
+        if (DataHolder is not TheoryTestData<TTestData>)
         {
-            theoryTestData.Add(testDataRow!.TestData);
+            InitDataHolder(testData);
+            return;
         }
+
+        base.Add(testData);
     }
 
     public TheoryTestData<TTestData>? GetTheoryTestData<TTestData>(ArgsCode? argsCode)
     where TTestData : notnull, ITestData
     {
-        if (DataRowHolder is null)
+        if (DataHolder is null)
         {
             return null;
         }
 
         argsCode ??= ArgsCode;
 
-        if (DataRowHolder is TheoryTestData<TTestData> theoryTestData)
+        if (DataHolder is TheoryTestData<TTestData> theoryTestData)
         {
             return argsCode == ArgsCode ?
                 theoryTestData
@@ -53,7 +52,7 @@ public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
                     argsCode.Value);
         }
 
-        if (DataRowHolder is IEnumerable<ITestDataRow> testDataRows
+        if (DataHolder is IEnumerable<ITestDataRow> testDataRows
             && testDataRows.All(x => x.GetTestData() is TTestData))
         {
             return new TheoryTestData<TTestData>(
@@ -64,32 +63,8 @@ public abstract class DynamicTheoryTestDataHolder(ArgsCode argsCode)
         return null;
     }
 
-    protected override void InitDataRowHolder<TTestData>(TTestData testData)
-    => DataRowHolder = new TheoryTestData<TTestData>(
+    protected override void InitDataHolder<TTestData>(TTestData testData)
+    => DataHolder = new TheoryTestData<TTestData>(
         testData,
         ArgsCode);
-
-    protected override bool TryCreateTestDataRow<TDataRow, TTestData>(
-        TTestData testData,
-        out ITestDataRow<object?[], TTestData>? testDataRow)
-    {
-        if (DataRowHolder is not ITheoryTestData)
-        {
-            return base.TryCreateTestDataRow<TDataRow, TTestData>(
-                testData,
-                out testDataRow);
-        }
-
-        bool isValidDataRowHolder =
-            Equals(DataRowHolder.DataStrategy) &&
-            GetTestDataType() == typeof(TTestData);
-
-        bool? withExpected = testData is IExpected;
-
-        return TryCreateTestDataRow(
-            testData,
-            isValidDataRowHolder,
-            withExpected,
-            out testDataRow);
-    }
 }

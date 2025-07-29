@@ -10,19 +10,21 @@ ITheoryTestData
     protected readonly List<ITestData> testDataList = [];
 
     public IDataStrategy DataStrategy
-    => GetDataStrategy(argsCode.Defined(nameof(argsCode)));
+    => GetDataStrategy(
+        argsCode.Defined(nameof(argsCode)),
+        PropertyCode.Expected);
 
     public abstract Type TestDataType { get; }
 
     public IDataStrategy GetDataStrategy(ArgsCode? argsCode)
     => GetStoredDataStrategy(
-        GetArgsCode(argsCode),
-        TestDataType.IsAssignableTo(typeof(IExpected)));
+        argsCode,
+        DataStrategy);
 
     public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode)
     => testDataList.Select(td => td.ToParams(
-        GetArgsCode(argsCode),
-        DataStrategy.WithExpected));
+        argsCode ?? DataStrategy.ArgsCode,
+        DataStrategy.PropertyCode));
 
     public void AddRange(IEnumerable<ITestData> testDataList)
     {
@@ -52,18 +54,24 @@ ITheoryTestData
     {
         AddRow(testData.ToParams(
             DataStrategy.ArgsCode,
-            DataStrategy.WithExpected));
+            DataStrategy.PropertyCode));
 
         testDataList.Add(testData);
     }
 
-    public abstract IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy);
     public abstract IEnumerable<ITestDataRow>? GetTestDataRows();
+    public abstract IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy);
 
-    private ArgsCode GetArgsCode(ArgsCode? argsCode)
-    => argsCode.HasValue ?
-        argsCode.Value.Defined(nameof(argsCode))
-        : DataStrategy.ArgsCode;
+
+    public IDataStrategy GetDataStrategy(ArgsCode? argsCode, PropertyCode? propertyCode)
+    => GetStoredDataStrategy(
+        argsCode ?? DataStrategy.ArgsCode,
+        propertyCode ?? DataStrategy.PropertyCode);
+
+    public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropertyCode? propertyCode)
+    => testDataList.Select(td => td.ToParams(
+        argsCode ?? DataStrategy.ArgsCode,
+        propertyCode ?? DataStrategy.PropertyCode));
 }
 
 public sealed class TheoryTestData<TTestData>
@@ -119,6 +127,7 @@ where TTestData : notnull, ITestData
 
     public void Add(TTestData testData)
     => base.Add(testData);
+
 
     public override IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy)
     {
