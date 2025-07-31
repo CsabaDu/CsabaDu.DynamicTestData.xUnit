@@ -41,7 +41,7 @@ public abstract class DynamicTheoryDataHolder()
     protected override void InitDataHolder<TTestData>(TTestData testData)
     {
         DataHolder = new TheoryData<TTestData>(testData);
-        TestDataType = typeof(TTestData);
+        //TestDataType = typeof(TTestData);
     }
     #endregion
 }

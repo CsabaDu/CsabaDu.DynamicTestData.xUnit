@@ -123,7 +123,7 @@ where TTestData : notnull, ITestData
         AddRange(testDataArrayList.Select(x => (ITestData)x[0]!));
     }
 
-    public override Type TestDataType => typeof(TTestData);
+    public override sealed Type TestDataType => typeof(TTestData);
 
     public void Add(TTestData testData)
     => base.Add(testData);
