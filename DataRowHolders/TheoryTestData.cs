@@ -12,7 +12,7 @@ ITheoryTestData
     public IDataStrategy DataStrategy
     => GetDataStrategy(
         argsCode.Defined(nameof(argsCode)),
-        PropertyCode.Expected);
+        PropsCode.Expected);
 
     public abstract Type TestDataType { get; }
 
@@ -24,7 +24,7 @@ ITheoryTestData
     public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode)
     => testDataList.Select(td => td.ToParams(
         argsCode ?? DataStrategy.ArgsCode,
-        DataStrategy.PropertyCode));
+        DataStrategy.PropsCode));
 
     public void AddRange(IEnumerable<ITestData> testDataList)
     {
@@ -54,7 +54,7 @@ ITheoryTestData
     {
         AddRow(testData.ToParams(
             DataStrategy.ArgsCode,
-            DataStrategy.PropertyCode));
+            DataStrategy.PropsCode));
 
         testDataList.Add(testData);
     }
@@ -63,15 +63,15 @@ ITheoryTestData
     public abstract IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy);
 
 
-    public IDataStrategy GetDataStrategy(ArgsCode? argsCode, PropertyCode? propertyCode)
+    public IDataStrategy GetDataStrategy(ArgsCode? argsCode, PropsCode? propsCode)
     => GetStoredDataStrategy(
         argsCode ?? DataStrategy.ArgsCode,
-        propertyCode ?? DataStrategy.PropertyCode);
+        propsCode ?? DataStrategy.PropsCode);
 
-    public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropertyCode? propertyCode)
+    public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropsCode? propsCode)
     => testDataList.Select(td => td.ToParams(
         argsCode ?? DataStrategy.ArgsCode,
-        propertyCode ?? DataStrategy.PropertyCode));
+        propsCode ?? DataStrategy.PropsCode));
 }
 
 public sealed class TheoryTestData<TTestData>

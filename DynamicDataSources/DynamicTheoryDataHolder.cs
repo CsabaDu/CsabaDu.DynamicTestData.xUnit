@@ -22,7 +22,7 @@ namespace CsabaDu.DynamicTestData.xUnit.DynamicDataSources;
 public abstract class DynamicTheoryDataHolder()
 : DynamicDataSource<TheoryData>(
     ArgsCode.Instance,
-    PropertyCode.Expected)
+    PropsCode.Expected)
 {
     #region Add
     protected override void Add<TTestData>(TTestData testData)
