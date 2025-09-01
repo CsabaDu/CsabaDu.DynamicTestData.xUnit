@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>true</IsPackable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Description>Lightweight, robust type-safe C# framework designed to facilitate dynamic data-driven testing in xUnit framework, by providing a simple and intuitive way to generate `TheoryData` instances or object arrays at runtime, based on `CsabaDu.DynamicTestData` features.</Description>
+		<Description>An extension of CsabaDu.DynamicTestData framework to facilitate dynamic data-driven testing in xUnit.</Description>
 		<Title>Dynamic Test Data xUnit</Title>
 		<Copyright>(c) 2025. Csaba Dudas (CsabaDu)</Copyright>
 		<PackageIcon>icon.png</PackageIcon>
@@ -18,14 +18,11 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Version>2.0.0</Version>
+		<Version>2.0.0-beta</Version>
 		<Company>CsabaDu</Company>
-		<PackageReleaseNotes>- **Updated**:
-	- README.md How it Works - Abstract DynamicTheoryDataSource Class section updated with `CheckedTheoryData` method explanation.
-	- README.md Added explanation how `TheoryData` property and `ResetTheoryData` method work.
-	- Small README.md corrections and visual refactorings.
-
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>
+      This is a beta release introducing breaking changes, new features, and architectural enhancements to the `CsabaDu.DynamicTestData.xUnit` library. These updates improve usability, flexibility, and extensibility.
+    </PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
