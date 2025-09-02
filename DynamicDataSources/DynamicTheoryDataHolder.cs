@@ -25,22 +25,26 @@ public abstract class DynamicTheoryDataHolder()
     PropsCode.Expected)
 {
     #region Add
-    protected override void Add<TTestData>(TTestData testData)
+    protected void Add<TTestData>(TTestData testData)
+    where TTestData : notnull, ITestData
     {
-        if (DataHolder is TheoryData<TTestData> theoryData)
+        ArgumentNullException.ThrowIfNull(testData, nameof(testData));
+
+        if (DataHolder is not TheoryData<TTestData> theoryData)
         {
-            theoryData.Add(testData);
+            DataHolder = new TheoryData<TTestData>(testData);
             return;
         }
 
-        InitDataHolder(testData);
-    }
-    #endregion
+        foreach (var item in theoryData)
+        {
+            if (testData.Equals(item))
+            {
+                return;
+            }
+        }
 
-    #region InitDataHolder
-    protected override void InitDataHolder<TTestData>(TTestData testData)
-    {
-        DataHolder = new TheoryData<TTestData>(testData);
+        theoryData.Add(testData);
     }
     #endregion
 }
