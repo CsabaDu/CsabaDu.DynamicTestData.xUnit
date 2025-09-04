@@ -25,8 +25,7 @@ public abstract class DynamicTheoryDataHolder()
     PropsCode.Expected)
 {
     #region Add
-    protected void Add<TTestData>(TTestData testData)
-    where TTestData : notnull, ITestData
+    protected override void Add<TTestData>(TTestData testData)
     {
         ArgumentNullException.ThrowIfNull(testData, nameof(testData));
 
