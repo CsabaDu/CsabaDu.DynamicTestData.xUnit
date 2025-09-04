@@ -9,11 +9,12 @@
 		<Description>An extension of CsabaDu.DynamicTestData framework to facilitate dynamic data-driven testing in xUnit.</Description>
 		<Title>Dynamic Test Data xUnit</Title>
 		<Copyright>(c) 2025. Csaba Dudas (CsabaDu)</Copyright>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageIcon>icon.png</PackageIcon>
+    <PackageTags>dynamic; unit; test; data; driven; typesafe; threadsafe; extensible; xunit; modular; TheoryData;</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/CsabaDu/CsabaDu.DynamicTestData/tree/master/_xUnit</RepositoryUrl>
 		<PackageOutputPath>$(OutputPath)</PackageOutputPath>
-		<PackageTags>dynamic; unit; test; data; driven; xunit; TheoryData;</PackageTags>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<IncludeSymbols>True</IncludeSymbols>
@@ -21,11 +22,12 @@
 		<Version>2.0.1-beta</Version>
 		<Company>CsabaDu</Company>
 		<PackageReleaseNotes>
-      DynamicTheoryDataHolder.Add(...) method made override.
+      - Dependency to CsabaDu.DynamicTestData 2.0.8-beta.
+      - DynamicTheoryDataHolder.Add(...) method made override.
     </PackageReleaseNotes>
 	</PropertyGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<Compile Remove="CsabaDu.DynamicTestData.xUnit.Tests\**" />
 		<Compile Remove="_Tests\**" />
 		<EmbeddedResource Remove="CsabaDu.DynamicTestData.xUnit.Tests\**" />
