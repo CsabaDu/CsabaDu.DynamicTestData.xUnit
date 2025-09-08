@@ -13,7 +13,7 @@
 		<PackageIcon>icon.png</PackageIcon>
     <PackageTags>dynamic; unit; test; data; driven; typesafe; threadsafe; extensible; xunit; modular; TheoryData;</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/CsabaDu/CsabaDu.DynamicTestData/tree/master/_xUnit</RepositoryUrl>
+		<RepositoryUrl>https://github.com/CsabaDu/CsabaDu.DynamicTestData.xUnit</RepositoryUrl>
 		<PackageOutputPath>$(OutputPath)</PackageOutputPath>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

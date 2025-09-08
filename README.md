@@ -1,4 +1,4 @@
-# CsabaDu.DynamicTestData.xUnit
+﻿# CsabaDu.DynamicTestData.xUnit
 
 
 🎯 An extension of CsabaDu.DynamicTestData framework to facilitate dynamic data-driven testing in xUnit.  
@@ -26,6 +26,27 @@ This README and the [dedicated Wiki](https://github.com/CsabaDu/CsabaDu.DynamicT
 To learn more about the core framework, visit the [CsabaDu.DynamicTestData package on NuGet](https://www.nuget.org/packages/CsabaDu.DynamicTestData/2.0.6-beta) and explore its [main Wiki](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki).
 
 For an overview of this xUnit-specific extension—including its purpose, integration points, and sample usage—see the [Extensibility & Ready-to-Use Implementations](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki/02.08-%F0%9F%93%90-Extensibility-&-Ready-to-Use-Implementations#-xunit) section.
+
+---
+
+## Documentation
+
+This README and the [dedicated Wiki](https://github.com/CsabaDu/CsabaDu.DynamicTestData.xUnit/wiki) for the **CsabaDu.DynamicTestData.xUnit** extension are currently under development. While full documentation is in progress, you can already find essential information and usage guidance.
+
+To learn more about the core framework, visit the [CsabaDu.DynamicTestData package on NuGet](https://www.nuget.org/packages/CsabaDu.DynamicTestData/2.0.6-beta) and explore its [main Wiki](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki).
+
+For an overview of this xUnit-specific extension—including its purpose, integration points, and sample usage—see the [Extensibility & Ready-to-Use Implementations](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki/02.08-%F0%9F%93%90-Extensibility-&-Ready-to-Use-Implementations#-xunit) section.
+
+---
+
+
+## Documentation
+
+This README and the [dedicated Wiki](https://github.com/CsabaDu/CsabaDu.DynamicTestData.xUnit/wiki) for the **CsabaDu.DynamicTestData.xUnit** extension are currently under development. While full documentation is in progress, you can already find essential information and usage guidance.
+
+To learn more about the core framework, visit the [CsabaDu.DynamicTestData package on NuGet](https://www.nuget.org/packages/CsabaDu.DynamicTestData/2.0.6-beta) and explore its [main Wiki](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki).
+
+For an overview of this xUnit-specific extensionâ€”including its purpose, integration points, and sample usageâ€”see the [Extensibility & Ready-to-Use Implementations](https://github.com/CsabaDu/CsabaDu.DynamicTestData/wiki/02.08-%F0%9F%93%90-Extensibility-&-Ready-to-Use-Implementations#-xunit) section.
 
 ---
 
