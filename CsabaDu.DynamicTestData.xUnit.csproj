@@ -37,8 +37,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CsabaDu.DynamicTestData" Version="2.0.8-beta" />
-		<PackageReference Include="xunit.core" Version="2.9.3" />
+		<PackageReference Include="CsabaDu.DynamicTestData" Version="2.1.0-beta" />
+		<PackageReference Include="CsabaDu.DynamicTestData.xUnit.Lite" Version="2.0.0-beta" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
