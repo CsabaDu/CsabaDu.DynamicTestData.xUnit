@@ -19,11 +19,11 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Version>2.0.1-beta</Version>
+		<Version>2.1.1-beta</Version>
 		<Company>CsabaDu</Company>
 		<PackageReleaseNotes>
-      - Dependency to CsabaDu.DynamicTestData 2.0.8-beta.
-      - DynamicTheoryDataHolder.Add(...) method made override.
+      - Dependency to CsabaDu.DynamicTestData 2.1.1-beta.
+      - ITheoryTestData and TheoryTestData are refactored.
     </PackageReleaseNotes>
 	</PropertyGroup>
 
@@ -37,8 +37,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CsabaDu.DynamicTestData" Version="2.1.0-beta" />
-		<PackageReference Include="CsabaDu.DynamicTestData.xUnit.Lite" Version="2.0.0-beta" />
+		<PackageReference Include="CsabaDu.DynamicTestData" Version="2.1.1-beta" />
+		<PackageReference Include="xunit.core" Version="2.9.3" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -4,16 +4,12 @@
 namespace CsabaDu.DynamicTestData.xUnit.DataRowHolders.Interfaces;
 
 public interface ITheoryTestData
-: IDataRowHolder<object?[]>
-{
-    Type TestDataType { get; }
-
-    void AddRange(IEnumerable<ITestData> testDataList);
-}
+: IDataRowHolder<object?[]>;
 
 public interface ITheoryTestData<TTestData>
 : ITheoryTestData, ITestDataRowFactory<object?[], TTestData>
 where TTestData : notnull, ITestData
 {
+    void AddRange(IEnumerable<TTestData> testDataList);
     void Add(TTestData testData);
 }

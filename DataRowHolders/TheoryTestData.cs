@@ -7,71 +7,25 @@ public abstract class TheoryTestData(ArgsCode argsCode)
 : TheoryData,
 ITheoryTestData
 {
-    protected readonly List<ITestData> testDataList = [];
-
     public IDataStrategy DataStrategy
     => GetDataStrategy(
         argsCode.Defined(nameof(argsCode)),
         PropsCode.Expected);
-
-    public abstract Type TestDataType { get; }
 
     public IDataStrategy GetDataStrategy(ArgsCode? argsCode)
     => GetStoredDataStrategy(
         argsCode,
         DataStrategy);
 
-    public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode)
-    => testDataList.Select(td => td.ToParams(
-        argsCode ?? DataStrategy.ArgsCode,
-        DataStrategy.PropsCode));
-
-    public void AddRange(IEnumerable<ITestData> testDataList)
-    {
-        ArgumentNullException.ThrowIfNull(testDataList, nameof(testDataList));
-
-        if (!testDataList.Any())
-        {
-            throw new ArgumentException(
-                "Test data list must not be empty.",
-                nameof(testDataList));
-        }
-
-        if (testDataList.Any(td => td.GetType() != TestDataType))
-        {
-            throw new ArgumentException(
-                $"Test data must be of type {TestDataType.Name}.",
-                nameof(testDataList));
-        }
-
-        foreach (var testData in testDataList)
-        {
-            Add(testData);
-        }
-    }
-
-    protected void Add(ITestData testData)
-    {
-        AddRow(testData.ToParams(
-            DataStrategy.ArgsCode,
-            DataStrategy.PropsCode));
-
-        testDataList.Add(testData);
-    }
-
-    public abstract IEnumerable<ITestDataRow>? GetTestDataRows();
-    public abstract IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy);
-
-
     public IDataStrategy GetDataStrategy(ArgsCode? argsCode, PropsCode? propsCode)
     => GetStoredDataStrategy(
         argsCode ?? DataStrategy.ArgsCode,
         propsCode ?? DataStrategy.PropsCode);
 
-    public IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropsCode? propsCode)
-    => testDataList.Select(td => td.ToParams(
-        argsCode ?? DataStrategy.ArgsCode,
-        propsCode ?? DataStrategy.PropsCode));
+    public abstract IEnumerable<ITestDataRow>? GetTestDataRows();
+    public abstract IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy);
+    public abstract IEnumerable<object?[]>? GetRows(ArgsCode? argsCode);
+    public abstract IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropsCode? propsCode);
 }
 
 public sealed class TheoryTestData<TTestData>
@@ -88,7 +42,7 @@ where TTestData : notnull, ITestData
     }
 
     public TheoryTestData(
-        IEnumerable<ITestData> testDataList,
+        IEnumerable<TTestData> testDataList,
         ArgsCode argsCode)
     : base(argsCode)
     {
@@ -100,7 +54,20 @@ where TTestData : notnull, ITestData
         ArgsCode argsCode)
     : base(argsCode)
     {
-        AddRange(testDataRows.Select(x => x.GetTestData()));
+        foreach (var tdr in testDataRows)
+        {
+            if (tdr.GetTestData() is TTestData testData)
+            {
+                Add(testData);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    "All test data rows must contain test data of type " +
+                    $"{typeof(TTestData).Name}.",
+                    nameof(testDataRows));
+            }
+        }
     }
 
     public TheoryTestData(
@@ -120,13 +87,47 @@ where TTestData : notnull, ITestData
                 nameof(other));
         }
 
-        AddRange(testDataArrayList.Select(x => (ITestData)x[0]!));
+        AddRange(testDataArrayList.Select(x => (TTestData)x[0]!));
     }
 
-    public override sealed Type TestDataType => typeof(TTestData);
+    private readonly List<TTestData> testDataList = [];
+
+    public override IEnumerable<object?[]>? GetRows(ArgsCode? argsCode)
+    => testDataList.Select(td => td.ToParams(
+        argsCode ?? DataStrategy.ArgsCode,
+        DataStrategy.PropsCode));
+
+    public void AddRange(IEnumerable<TTestData> testDataList)
+    {
+        ArgumentNullException.ThrowIfNull(testDataList, nameof(testDataList));
+
+        if (!testDataList.Any())
+        {
+            throw new ArgumentException(
+                "Test data list must not be empty.",
+                nameof(testDataList));
+        }
+
+        foreach (var testData in testDataList)
+        {
+            Add(testData);
+        }
+    }
 
     public void Add(TTestData testData)
-    => base.Add(testData);
+    {
+        AddRow(testData.ToParams(
+            DataStrategy.ArgsCode,
+            DataStrategy.PropsCode));
+
+        testDataList.Add(testData);
+    }
+
+
+    public override IEnumerable<object?[]>? GetRows(ArgsCode? argsCode, PropsCode? propsCode)
+    => testDataList.Select(td => td.ToParams(
+        argsCode ?? DataStrategy.ArgsCode,
+        propsCode ?? DataStrategy.PropsCode));
 
 
     public override IDataRowHolder<object?[]> GetDataRowHolder(IDataStrategy dataStrategy)
