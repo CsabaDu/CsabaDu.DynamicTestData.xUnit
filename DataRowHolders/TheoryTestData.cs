@@ -5,7 +5,7 @@ namespace CsabaDu.DynamicTestData.xUnit.DataRowHolders;
 
 public abstract class TheoryTestData(ArgsCode argsCode)
 : TheoryData,
-ITheoryTestData
+IDataRowHolder<object?[]>
 {
     public IDataStrategy DataStrategy
     => GetDataStrategy(
@@ -30,7 +30,7 @@ ITheoryTestData
 
 public sealed class TheoryTestData<TTestData>
 : TheoryTestData,
-ITheoryTestData<TTestData>
+ ITestDataRowFactory<object?[], TTestData>
 where TTestData : notnull, ITestData
 {
     public TheoryTestData(
