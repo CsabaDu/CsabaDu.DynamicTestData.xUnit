@@ -24,43 +24,30 @@ public abstract class DynamicTheoryTestDataSource(ArgsCode argsCode)
 {
     protected override void Add<TTestData>(TTestData testData)
     {
-        if (DataHolder is not TheoryTestData<TTestData>)
-        {
-            InitDataHolder(testData);
-            return;
-        }
+        var theoryTestData = DataHolder as TheoryTestData<TTestData>;
+        var testDataRows = theoryTestData?.GetTestDataRows();
 
-        base.Add(testData);
+        Add(theoryTestData is not null,
+            testData,
+            testDataRows!,
+            theoryTestData!.Add);
     }
 
     public TheoryTestData<TTestData>? GetTheoryTestData<TTestData>(ArgsCode? argsCode)
     where TTestData : notnull, ITestData
     {
-        if (DataHolder is null)
+        if (DataHolder is not TheoryTestData<TTestData> theoryTestData)
         {
             return null;
         }
 
         argsCode ??= ArgsCode;
 
-        if (DataHolder is TheoryTestData<TTestData> theoryTestData)
-        {
-            return argsCode == ArgsCode ?
-                theoryTestData
-                : new TheoryTestData<TTestData>(
-                    theoryTestData,
-                    argsCode.Value);
-        }
-
-        if (DataHolder is IEnumerable<ITestDataRow> testDataRows
-            && testDataRows.All(x => x.GetTestData() is TTestData))
-        {
-            return new TheoryTestData<TTestData>(
-                testDataRows,
+        return argsCode == ArgsCode ?
+            theoryTestData
+            : new TheoryTestData<TTestData>(
+                theoryTestData,
                 argsCode.Value);
-        }
-
-        return null;
     }
 
     protected override void InitDataHolder<TTestData>(TTestData testData)

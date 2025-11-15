@@ -41,34 +41,34 @@ where TTestData : notnull, ITestData
         Add(testData);
     }
 
-    public TheoryTestData(
-        IEnumerable<TTestData> testDataList,
-        ArgsCode argsCode)
-    : base(argsCode)
-    {
-        AddRange(testDataList);
-    }
+    //public TheoryTestData(
+    //    IEnumerable<TTestData> testDataList,
+    //    ArgsCode argsCode)
+    //: base(argsCode)
+    //{
+    //    AddRange(testDataList);
+    //}
 
-    internal TheoryTestData(
-        IEnumerable<ITestDataRow> testDataRows,
-        ArgsCode argsCode)
-    : base(argsCode)
-    {
-        foreach (var tdr in testDataRows)
-        {
-            if (tdr.GetTestData() is TTestData testData)
-            {
-                Add(testData);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    "All test data rows must contain test data of type " +
-                    $"{typeof(TTestData).Name}.",
-                    nameof(testDataRows));
-            }
-        }
-    }
+    //internal TheoryTestData(
+    //    IEnumerable<ITestDataRow> testDataRows,
+    //    ArgsCode argsCode)
+    //: base(argsCode)
+    //{
+    //    foreach (var tdr in testDataRows)
+    //    {
+    //        if (tdr.GetTestData() is TTestData testData)
+    //        {
+    //            Add(testData);
+    //        }
+    //        else
+    //        {
+    //            throw new ArgumentException(
+    //                "All test data rows must contain test data of type " +
+    //                $"{typeof(TTestData).Name}.",
+    //                nameof(testDataRows));
+    //        }
+    //    }
+    //}
 
     public TheoryTestData(
         TheoryTestData<TTestData> other,
