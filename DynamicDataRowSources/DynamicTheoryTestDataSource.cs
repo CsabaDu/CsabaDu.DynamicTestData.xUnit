@@ -24,12 +24,11 @@ public abstract class DynamicTheoryTestDataSource(ArgsCode argsCode)
 {
     protected override void Add<TTestData>(TTestData testData)
     {
-        var theoryTestData = GetTheoryTestData<TTestData>(ArgsCode);
-        var testDataRows = theoryTestData?.GetTestDataRows();
+        var theoryTestData = DataHolder as TheoryTestData<TTestData>;
 
         Add(theoryTestData is not null,
             testData,
-            testDataRows!,
+            theoryTestData!.GetTestDataRows()!,
             theoryTestData!.Add);
     }
 
