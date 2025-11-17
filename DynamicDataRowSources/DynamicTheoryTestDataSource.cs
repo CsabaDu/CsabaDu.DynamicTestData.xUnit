@@ -28,7 +28,6 @@ public abstract class DynamicTheoryTestDataSource(ArgsCode argsCode)
 
         Add(theoryTestData is not null,
             testData,
-            theoryTestData!.GetTestDataRows()!,
             theoryTestData!.Add);
     }
 

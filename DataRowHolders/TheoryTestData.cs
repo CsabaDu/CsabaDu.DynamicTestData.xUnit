@@ -87,6 +87,13 @@ where TTestData : notnull, ITestData
 
     public void Add(TTestData testData)
     {
+        var namedTestCases = (IEnumerable<INamedTestCase>)testDataList;
+
+        if (testData.ContainedBy(namedTestCases))
+        {
+            return;
+        }
+
         AddRow(testData.ToParams(
             DataStrategy.ArgsCode,
             DataStrategy.PropsCode));
