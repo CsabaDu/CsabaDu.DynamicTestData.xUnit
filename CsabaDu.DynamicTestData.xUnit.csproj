@@ -19,7 +19,7 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Version>2.2.2-beta</Version>
+		<Version>2.2.3-beta</Version>
 		<Company>CsabaDu</Company>
 		<PackageReleaseNotes>
       - Dependency to CsabaDu.DynamicTestData 2.1.1-beta.
@@ -37,7 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CsabaDu.DynamicTestData" Version="2.2.2-beta" />
 		<PackageReference Include="xunit.core" Version="2.9.3" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
 			<PrivateAssets>all</PrivateAssets>
@@ -74,6 +73,10 @@
 
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CsabaDu.DynamicTestData\CsabaDu.DynamicTestData.csproj" />
   </ItemGroup>
 
 </Project>
